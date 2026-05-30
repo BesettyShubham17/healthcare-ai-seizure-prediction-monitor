@@ -108,15 +108,21 @@ export default function Footer() {
           <p style={{ fontSize: 13, color: "#475569" }}>
             © 2026 NeuroSense AI. Built with 🧠 for healthcare innovation.
           <br />
-          <span style={{ fontSize: 12, color: "#334155", marginTop: 4, display: "block" }}>
+          <span style={{ fontSize: 14, color: "#00d4ff", fontWeight: 600, marginTop: 8, display: "block", letterSpacing: "0.5px" }}>
             © Shubham Besetty. All rights reserved.
           </span>
           </p>
           <div style={{ display: "flex", gap: 12 }}>
-            {[FiGithub, FiLinkedin, FiMail].map((Icon, i) => (
+            {[
+              { Icon: FiGithub, href: "https://github.com/BesettyShubham17" },
+              { Icon: FiLinkedin, href: "https://linkedin.com/in/shubham-besetty-17s" },
+              { Icon: FiMail, href: "mailto:shubhambesetty@gmail.com" },
+            ].map(({ Icon, href }, i) => (
               <motion.a
                 key={i}
-                href="#"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.15, y: -2 }}
                 whileTap={{ scale: 0.9 }}
                 style={{
