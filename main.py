@@ -12,6 +12,8 @@ model = load_model("lstm_model.h5")
 from sklearn.preprocessing import StandardScaler
 scaler = joblib.load('scaler.pkl')
 
+from advanced_eeg_mode import advanced_eeg_page
+
 if 'role' not in st.session_state:
     st.session_state.role = 'user'
 
@@ -357,8 +359,7 @@ def attack_detection():
                     st.dataframe(data.head())
                 
                 # Make prediction
-                data_scaled = scaler.transform(data)
-                data_reshaped = data_scaled.reshape((data_scaled.shape[0], 1, data_scaled.shape[1]))
+                data_reshaped = preprocess_data(data, scaler)
                 prediction = model.predict(data_reshaped)
                 prediction_class = (prediction > 0.5).astype(int)
                 result = "Epileptic seizure" if prediction_class[0][0] == 1 else "Healthy"
@@ -411,8 +412,8 @@ st.markdown(
 
 selected = option_menu(
     menu_title=None,
-    options=['Home', 'About', "Sample Data", "Detection"],
-    icons=['Home', 'info-circle', 'database-fill', 'paperclip'], 
+    options=['Home', 'About', "Sample Data", "Detection", "Advanced EEG"],
+    icons=['Home', 'info-circle', 'database-fill', 'paperclip', 'activity'], 
     menu_icon="cast", 
     default_index=0,
     orientation="horizontal",
@@ -437,3 +438,5 @@ elif selected == "Sample Data":
     sample_data()
 elif selected == "Detection":
     attack_detection()
+elif selected == "Advanced EEG":
+    advanced_eeg_page(model, scaler)
