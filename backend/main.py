@@ -21,8 +21,8 @@ app.add_middleware(
 )
 
 # Load model and scaler globally
-MODEL_PATH = os.getenv("MODEL_PATH", "../lstm_model.h5")
-SCALER_PATH = os.getenv("SCALER_PATH", "../scaler.pkl")
+MODEL_PATH = os.getenv("MODEL_PATH", "lstm_model.h5")
+SCALER_PATH = os.getenv("SCALER_PATH", "scaler.pkl")
 
 model = None
 scaler = None
@@ -33,9 +33,9 @@ async def startup_event():
     try:
         model = load_model(MODEL_PATH)
         scaler = joblib.load(SCALER_PATH)
-        print("✅ Model and Scaler loaded successfully.")
+        print("Success: Model and Scaler loaded successfully.")
     except Exception as e:
-        print(f"❌ Error loading model or scaler: {e}")
+        print(f"Error: Error loading model or scaler: {e}")
 
 # In-memory data store for demonstration
 prediction_history = []

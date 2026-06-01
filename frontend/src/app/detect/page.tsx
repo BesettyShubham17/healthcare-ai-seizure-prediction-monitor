@@ -89,31 +89,51 @@ function DetectContent() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: { "text/csv": [".csv"] }, maxFiles: 1 });
 
-  const runPrediction = () => {
+  const runPrediction = async () => {
+    if (!file) return;
     setAnalyzing(true);
     setProgress(0);
     setResult(null);
+
     const interval = setInterval(() => {
       setProgress((p) => {
-        if (p >= 100) { clearInterval(interval); return 100; }
+        if (p >= 90) { return 90; }
         return p + Math.random() * 8 + 2;
       });
     }, 120);
-    
-    setTimeout(() => {
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("http://localhost:8000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
       clearInterval(interval);
       setProgress(100);
+
+      if (!res.ok) {
+        const err = await res.json();
+        alert("Prediction error: " + (err.detail || "Unknown error"));
+        setAnalyzing(false);
+        return;
+      }
+
+      const data = await res.json();
+
       setTimeout(() => {
-        const isSeizure = Math.random() > 0.45;
-        const conf = isSeizure ? 85 + Math.random() * 14 : 88 + Math.random() * 11;
-        const riskScore = isSeizure ? 75 + Math.random() * 24 : 5 + Math.random() * 25;
-        
+        const isSeizure = data.prediction === "Seizure Detected";
+        const riskScore = data.risk_score;
+        const conf = data.probability * 100;
+
         setResult({
           seizure: isSeizure,
           confidence: Math.round(conf * 10) / 10,
           risk: isSeizure ? "HIGH" : "LOW",
           riskScore: Math.round(riskScore * 10) / 10,
-          features: Array.from({ length: 10 }, () => Math.round(Math.random() * 100)),
+          features: (data.feature_importance || []).map((f: any) => Math.round(f.importance * 100)),
         });
         setAnalyzing(false);
 
@@ -137,9 +157,13 @@ function DetectContent() {
             }, 600);
           } catch(e) { console.error("Audio play failed", e); }
         }
-
       }, 500);
-    }, 3500);
+
+    } catch (err) {
+      clearInterval(interval);
+      setAnalyzing(false);
+      alert("Failed to connect to backend. Make sure the FastAPI server is running on port 8000.");
+    }
   };
 
   const generatePDF = () => {
