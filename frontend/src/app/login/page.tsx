@@ -23,7 +23,11 @@ function LoginContent() {
     // Mock authentication
     setTimeout(() => {
       setLoading(false);
-      router.push(`/detect?mode=${mode}`);
+      if (mode === "doctor") {
+        router.push(`/doctor-dashboard`);
+      } else {
+        router.push(`/user-dashboard`);
+      }
     }, 1500);
   };
 
