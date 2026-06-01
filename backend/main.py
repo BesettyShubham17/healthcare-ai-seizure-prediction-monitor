@@ -9,7 +9,7 @@ import base64
 import datetime
 import joblib
 from pathlib import Path
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 # ---------------------------------------------------------------------------
 # Resolve paths relative to THIS file so it works both locally and on Render
