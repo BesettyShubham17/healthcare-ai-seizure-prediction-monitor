@@ -22,7 +22,11 @@ const fadeUp = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, delay: i * 0.12, ease: "easeOut" },
+    transition: {
+      duration: 0.7,
+      delay: i * 0.12,
+      ease: [0.25, 0.1, 0.25, 1], // ✅ FIXED ONLY THIS LINE
+    },
   }),
 };
 
@@ -99,20 +103,21 @@ export default function AboutPage() {
           >
             <FiActivity size={14} /> About the System
           </div>
+
           <h1 className="heading-xl" style={{ marginBottom: 20, maxWidth: 700, margin: "0 auto 20px" }}>
             How <span className="gradient-text">NeuroSense AI</span> Works
           </h1>
+
           <p className="text-body" style={{ maxWidth: 640, margin: "0 auto" }}>
-            An end-to-end deep learning pipeline that transforms raw EEG brainwave data into 
+            An end-to-end deep learning pipeline that transforms raw EEG brainwave data into
             life-saving seizure predictions using state-of-the-art LSTM neural networks.
           </p>
         </motion.div>
       </section>
 
-      {/* ===== PIPELINE TIMELINE ===== */}
+      {/* PIPELINE */}
       <section style={{ padding: "20px 24px 100px" }}>
         <div style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}>
-          {/* Vertical line */}
           <div
             style={{
               position: "absolute",
@@ -120,7 +125,8 @@ export default function AboutPage() {
               top: 0,
               bottom: 0,
               width: 2,
-              background: "linear-gradient(180deg, rgba(0,212,255,0.3), rgba(124,58,237,0.3), rgba(0,212,255,0.1))",
+              background:
+                "linear-gradient(180deg, rgba(0,212,255,0.3), rgba(124,58,237,0.3), rgba(0,212,255,0.1))",
             }}
           />
 
@@ -139,7 +145,6 @@ export default function AboutPage() {
                 position: "relative",
               }}
             >
-              {/* Node */}
               <div
                 style={{
                   minWidth: 56,
@@ -150,56 +155,37 @@ export default function AboutPage() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  position: "relative",
                   zIndex: 2,
                 }}
               >
                 <step.icon size={24} color={step.color} />
               </div>
 
-              {/* Content Card */}
               <div className="glass-card" style={{ padding: 28, flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: step.color,
-                      background: `${step.color}12`,
-                      padding: "3px 10px",
-                      borderRadius: 6,
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    STEP {i + 1}
-                  </span>
-                </div>
-                <h3 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9", marginBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: step.color }}>
+                  STEP {i + 1}
+                </span>
+
+                <h3 style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9" }}>
                   {step.title}
                 </h3>
-                <p style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.7 }}>{step.desc}</p>
+
+                <p style={{ fontSize: 14, color: "#94a3b8" }}>{step.desc}</p>
               </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* ===== MODEL METRICS ===== */}
+      {/* METRICS */}
       <section style={{ padding: "60px 24px 100px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-            style={{ textAlign: "center", marginBottom: 48 }}
-          >
-            <h2 className="heading-lg" style={{ marginBottom: 12 }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 className="heading-lg">
               Model <span className="gradient-text">Performance</span>
             </h2>
             <p className="text-body">Validated metrics from test set evaluation.</p>
-          </motion.div>
+          </div>
 
           <div
             style={{
@@ -209,37 +195,19 @@ export default function AboutPage() {
             }}
           >
             {metrics.map((m, i) => (
-              <motion.div
-                key={m.label}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                className="glass-card"
-                style={{ padding: 28, textAlign: "center" }}
-              >
-                <m.icon size={22} color={m.color} style={{ marginBottom: 12 }} />
-                <div
-                  style={{
-                    fontSize: 28,
-                    fontWeight: 800,
-                    color: m.color,
-                    marginBottom: 6,
-                  }}
-                >
+              <div key={m.label} className="glass-card" style={{ padding: 28, textAlign: "center" }}>
+                <m.icon size={22} color={m.color} />
+                <div style={{ fontSize: 28, fontWeight: 800, color: m.color }}>
                   {m.value}
                 </div>
-                <div style={{ fontSize: 12, color: "#64748b", fontWeight: 500, textTransform: "uppercase", letterSpacing: "1px" }}>
-                  {m.label}
-                </div>
-              </motion.div>
+                <div style={{ fontSize: 12 }}>{m.label}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== ABOUT PROJECT CARDS ===== */}
+      {/* CARDS */}
       <section style={{ padding: "40px 24px 100px" }}>
         <div
           style={{
@@ -250,65 +218,20 @@ export default function AboutPage() {
             gap: 24,
           }}
         >
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={0}
-            className="glass-card"
-            style={{ padding: 36 }}
-          >
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>
-              🧠 What is Epilepsy?
-            </h3>
-            <p style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.8 }}>
-              Epilepsy is a chronic neurological disorder characterized by recurrent, unprovoked seizures.
-              It affects approximately 50 million people worldwide. Early detection through EEG analysis
-              can significantly improve patient outcomes and quality of life. Our AI system aims to provide
-              instant, accurate detection to support medical decision-making.
-            </p>
-          </motion.div>
+          <div className="glass-card" style={{ padding: 36 }}>
+            <h3>🧠 What is Epilepsy?</h3>
+            <p>Neurological disorder with recurrent seizures...</p>
+          </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={1}
-            className="glass-card"
-            style={{ padding: 36 }}
-          >
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>
-              📊 EEG Dataset
-            </h3>
-            <p style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.8 }}>
-              The dataset contains 11,500 samples of EEG recordings from the UCI Machine Learning Repository
-              (originally from the Bonn University study). Each sample has 178 data points representing 1 second
-              of brainwave activity sampled at 178 Hz. The data is labeled into 5 classes, with Class 1
-              indicating epileptic seizure activity.
-            </p>
-          </motion.div>
+          <div className="glass-card" style={{ padding: 36 }}>
+            <h3>📊 EEG Dataset</h3>
+            <p>11,500 EEG samples from UCI dataset...</p>
+          </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            custom={2}
-            className="glass-card"
-            style={{ padding: 36 }}
-          >
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>
-              🤖 Why LSTM?
-            </h3>
-            <p style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.8 }}>
-              Long Short-Term Memory (LSTM) networks excel at learning temporal dependencies in sequential data.
-              EEG signals are inherently time-series data where patterns unfold over time. LSTM&apos;s gating mechanisms
-              allow it to capture both short-term spikes and long-term trends in brainwave activity, making it
-              ideal for seizure pattern recognition.
-            </p>
-          </motion.div>
+          <div className="glass-card" style={{ padding: 36 }}>
+            <h3>🤖 Why LSTM?</h3>
+            <p>Best for sequential EEG time-series data...</p>
+          </div>
         </div>
       </section>
 
