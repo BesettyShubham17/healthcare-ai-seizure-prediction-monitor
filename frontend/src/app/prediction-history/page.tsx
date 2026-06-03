@@ -13,7 +13,7 @@ export default function PredictionHistory() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch("http://localhost:8000/prediction-history");
+        const res = await fetch("https://healthcare-ai-seizure-prediction-monitor.onrender.com/prediction-history");
         const data = await res.json();
         setHistory(data);
       } catch (err) {

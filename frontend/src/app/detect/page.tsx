@@ -106,7 +106,7 @@ function DetectContent() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("http://localhost:8000/predict", {
+      const res = await fetch("https://healthcare-ai-seizure-prediction-monitor.onrender.com/predict", {
         method: "POST",
         body: formData,
       });

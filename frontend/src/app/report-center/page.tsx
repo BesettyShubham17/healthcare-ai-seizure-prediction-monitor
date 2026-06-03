@@ -13,7 +13,7 @@ export default function ReportCenter() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch("http://localhost:8000/reports");
+        const res = await fetch("https://healthcare-ai-seizure-prediction-monitor.onrender.com/reports");
         const data = await res.json();
         setReports(data);
       } catch (err) {

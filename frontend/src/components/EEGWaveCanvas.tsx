@@ -55,7 +55,10 @@ export default function EEGWaveCanvas() {
         ctx.stroke();
       });
 
-      animationId = requestAnimationFrame(draw);
+      const isBot = /bot|googlebot|crawler|spider|robot|crawling|vercel/i.test(navigator.userAgent);
+      if (!isBot || time < 2) {
+        animationId = requestAnimationFrame(draw);
+      }
     };
 
     draw();

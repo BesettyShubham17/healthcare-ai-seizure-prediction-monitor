@@ -48,7 +48,7 @@ export default function AdvancedEEGPage() {
     setResult(null);
     
     const isEdf = file.name.toLowerCase().endsWith(".edf");
-    const endpoint = isEdf ? "http://localhost:8000/predict-edf" : "http://localhost:8000/predict";
+    const endpoint = isEdf ? "https://healthcare-ai-seizure-prediction-monitor.onrender.com/predict-edf" : "https://healthcare-ai-seizure-prediction-monitor.onrender.com/predict";
     
     const formData = new FormData();
     formData.append("file", file);
@@ -115,7 +115,7 @@ export default function AdvancedEEGPage() {
       formData.append("file_type", file.name.endsWith(".edf") ? "EDF" : "CSV");
       formData.append("doctor_notes", "");
 
-      const res = await fetch("http://localhost:8000/generate-report", {
+      const res = await fetch("https://healthcare-ai-seizure-prediction-monitor.onrender.com/generate-report", {
         method: "POST",
         body: formData
       });
