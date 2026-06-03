@@ -22,7 +22,7 @@ const fadeUp = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, delay: i * 0.1, ease: "easeOut" },
+    transition: { duration: 0.7, delay: i * 0.1, ease: "easeOut" as const },
   }),
 };
 
@@ -117,7 +117,7 @@ export default function HomePage() {
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" as const }}
             className="heading-xl"
             style={{ marginBottom: 24 }}
           >
